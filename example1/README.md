@@ -38,4 +38,4 @@ Pressing START in the environment will begin the OMNeT++ simulation.
 Once the message has bounced back and forth between the two modules for a number of counts, the simulation will invoke finish() and send a message back to pubFed saying, "Simulation is done!" The time, 4.0, will be granted after this exchange.
 
 
-Both federates will have publication and subscription instances to allow reply and response. Each federate will be run as their own executable. 
+*Both federates will have publication and subscription instances to allow reply and response. Each federate will be run as their own executable.* 
