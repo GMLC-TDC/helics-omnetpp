@@ -4,6 +4,12 @@ Helics-Omnetpp contains examples of the interaction between HELICS and OMNeT++.
 1. Install HELICS. 
 2. Install OMNeT++
 
+## Installation of HELICS 
+
+HELICS download for preferred OS (Ubuntu, Windows, MacOS, docker) can be found [here](https://helics.readthedocs.io/en/latest/installation/index.html#).
+
+*HELICS also provides options of installing through an installer (must donwload pre-compiled libraries from release page and add to path) or package manager.*
+
 ## Installation of OMNeT++
 
 OMNeT++ download for preferred OS (Linux, Windows, MacOS, docker) can be found [here](https://omnetpp.org/download/).
