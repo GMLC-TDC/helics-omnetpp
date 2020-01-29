@@ -1,4 +1,4 @@
-## SimpleTicToc example
+# SimpleTicToc example
 
 This example shows a simple exchange of a string between value federates in an OMNeT++ environment. 
 
@@ -16,7 +16,7 @@ Helics will be used to instantiate the OMNeT++ federate and to create the connec
 
 The omnetpp.ini is a configuration file. It is also another file that is required in the OMNeT++ simulation. You can choose to modify or not. 
 
-# How this works
+## How this works
 
 1. Execute helics_broker -f2 on commandline - be sure to be in the correct directory 
 2. Execute pubFed.exe 
@@ -24,7 +24,7 @@ The omnetpp.ini is a configuration file. It is also another file that is require
 3. Execute simpletictoc.exe 
 	- This should create a connection between the broker and simpletictoc. Because simpletictoc is subscribing to pubFed, when the connection is present, the broker will deliver the string pubFed had sent to simpletictoc.
 
-# What is happening? 
+## What is happening? 
 
 The helics_broker is waiting for two federates to connect to it. pubFed will first connect to it, send the string, "Hello!!", and grant the time of 2.0 if it successful. 
 In the meantime, the broker will hold onto the string until simpletictoc is connected to it. Once simpletictoc is connected to the helics_broker, OMNeT++'s graphical runtime environment will pop up and you will see the set up of the network TicToc1. 
