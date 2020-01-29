@@ -17,3 +17,9 @@ Depending on which OS you are using, you will be need to follow the instructions
 
 - Helics library and include paths need to be added to Path and Symbols in OMNeT++ IDE and also under Properties/OMNeT++/Makemake/Build option. 
 - Make sure that helics_broker is accepting the appropriate number of federates. 
+
+## Release
+
+HELICS and helics-omnetpp are distributed under the terms of the [BSD-3](https://github.com/GMLC-TDC/helics-omnetpp/blob/master/LICENSE) clause license. All new contributions must be made under this license.
+
+SPDX-License-Identifier: BSD-3-Clause
