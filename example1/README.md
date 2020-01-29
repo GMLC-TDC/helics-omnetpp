@@ -10,8 +10,12 @@ There are five components to consider: the Helics Federate (pubFed), the OMNeT++
 In the pubFed directory, the pubFed.cpp will contain the HELICS Federate, pubFed. It provides the information that will be passed to the OMNeT++ federate, simpletictoc. The chosen value that will be published to simpletictoc is "Hello!!". 
 
 The simpletictoc directory has three files: omnetpp.ini, tictoc1.ned, and txc1.cc. 
-In OMNeT++, all simulations need a network in order to run. The modeling of this topology is found in .ned files. All simulations under OMNeT++ must have a .ned file.  
-We will be working with the network Tictoc1. Since a network is a compound module, this means that network TicToc1 is comprised of simple or compound modules. In this case, it will only be simple modules. The two simple modules in the TicToc1 network are tic (instance of class Txc1) and inputFed(instance of class Helics). 
+
+In OMNeT++, all simulations need a network in order to run. The modeling of this topology is found in .ned files. All simulations under OMNeT++ must also have a .ned file.  
+
+We will be working with the network Tictoc1. 
+
+Since a network is a compound module, this means that network TicToc1 is comprised of simple or compound modules. In this case, it will only be simple modules. The two simple modules in the TicToc1 network are tic (instance of class Txc1) and inputFed(instance of class Helics). 
 Helics will be used to instantiate the OMNeT++ federate and to create the connection with the HELICS broker while Txc1 will simply be used as a module that will be bouncing the string back and forth between itself and inputFed module until a certain amount of counts have been reached. 
 
 The omnetpp.ini is a configuration file. It is also another file that is required in the OMNeT++ simulation. You can choose to modify or not. 
@@ -26,8 +30,9 @@ The omnetpp.ini is a configuration file. It is also another file that is require
 
 ## What is happening? 
 
-The helics_broker is waiting for two federates to connect to it. pubFed will first connect to it, send the string, "Hello!!", and grant the time of 2.0 if it successful. 
-In the meantime, the broker will hold onto the string until simpletictoc is connected to it. Once simpletictoc is connected to the helics_broker, OMNeT++'s graphical runtime environment will pop up and you will see the set up of the network TicToc1. 
+The helics_broker waits for two federates to connect to it. The pubFed will first connect to it, send the string, "Hello!!", and grant the time of 2.0 if it successful. 
+In the meantime, the broker will hold onto the string until simpletictoc is connected to it. 
+Once simpletictoc is connected to the helics_broker, OMNeT++'s graphical runtime environment will pop up and you will see the set up of the network TicToc1. 
 In the environment you will see that next to the InputFed, there is the message "Hello!" which means that the publication had succeeded. It is granted the time of 2.0. 
 Pressing START in the environment will begin the OMNeT++ simulation. 
 Once the message has bounced back and forth between the two modules for a number of counts, the simulation will invoke finish() and send a message back to pubFed saying, "Simulation is done!" The time, 4.0, will be granted after this exchange.
