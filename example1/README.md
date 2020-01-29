@@ -39,3 +39,9 @@ Once the message has bounced back and forth between the two modules for a number
 
 
 *Both federates will have publication and subscription instances to allow sending and response. Each federate will be run as their own executable.* 
+
+## Release
+
+HELICS and helics-omnetpp are distributed under the terms of the [BSD-3](https://github.com/GMLC-TDC/helics-omnetpp/blob/master/LICENSE) clause license. All new contributions must be made under this license.
+
+SPDX-License-Identifier: BSD-3-Clause
