@@ -17,7 +17,7 @@ The Hypercube sample code from OMNeT++ is used in this example.
 ## What is happening?
 The two federates - HELICS and OMNeT++ - both connect to the broker. At the initialization of the simulation, the HELICS federate connects to the helics_broker and publishes the new dimensions to the helics_broker to hold until the OMNeT++ federate connects to it and subscribes to it.
 
-After the initialization and the simulation begins, the hypecubeNetwork module will inquire a new dimension from the OMNeT++ federate. This would tell the OMNeT++ federate to obtain the new dimensions from the broker. Once obtained, that value is sent to the hypcubeNetwork where the value is used to build the dimensions of the Hypercube. 
+After the initialization and the simulation begins, the hypecubeNetwork module will inquire a new dimension from the OMNeT++ federate. This would tell the OMNeT++ federate to obtain the new dimensions from the broker. Once obtained, that value is sent to the hypcubeNetwork where the value is used to build the dimensions of the Hypercube.
 
 ***Steps to see the module creation:***
 
@@ -38,3 +38,9 @@ After the initialization and the simulation begins, the hypecubeNetwork module w
   8. Now if you click start, you will see the simulation run.
 
 After you stop and finish the simulation, the dynamic module Hypercube will be deallocated and deleted.
+
+## Release
+
+HELICS and helics-omnetpp are distributed under the terms of the [BSD-3](https://github.com/GMLC-TDC/helics-omnetpp/blob/master/LICENSE) clause license. All new contributions must be made under this license.
+
+SPDX-License-Identifier: BSD-3-Clause
