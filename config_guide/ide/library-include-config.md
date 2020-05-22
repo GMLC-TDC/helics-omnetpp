@@ -2,7 +2,7 @@
 
 *This guide is specific to the IDE configuration to link HELICS library and headers to OMNET++*
 
-Ensure that you have already created an OMNET++ project before continuing onto this step.(see )
+Ensure that you have already created an OMNET++ project before continuing onto this step.
 Please note that the example seen in the pictures are done with example1/simpletictoc code.
 
 Determine where your HELICS library and header files are. This can vary depending on the location you chose during your HELICS build.
