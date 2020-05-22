@@ -9,7 +9,6 @@
 
 #include "HCSink.h"
 #include "HCPacket_m.h"
-#include "helicsAssist.h"
 
 Define_Module(HCSink);
 
@@ -51,4 +50,3 @@ void HCSink::handleMessage(cMessage *msg)
     // message no longer needed
     delete pkt;
 }
-
