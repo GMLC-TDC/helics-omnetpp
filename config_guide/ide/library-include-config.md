@@ -12,15 +12,15 @@ Make note of the locations and the name of the library.
 
 In order to get to the Makemake options, you will go to Project/Properties.
 
-![](/config_guide/ide/demo-pictures/demo5.PNG)
+<img alt="demo5.PNG" src=/config_guide/ide/demo-pictures/demo5.PNG width="550>
 
 Then you will choose OMNET++ on the left side bar and choose Makemake.
 
-![](/config_guide/ide/demo-pictures/demo6.PNG)
+<img alt="demo6.PNG" src=/config_guide/ide/demo-pictures/demo6.PNG width="525">
 
 Click on your project and on the right side, under Build and Makemake you will click Options.
 
-![](/config_guide/ide/demo-pictures/demo7.PNG)
+<img alt="demo7.PNG" src=/config_guide/ide/demo-pictures/demo7.PNG width="525">
 
 This will open up another window. Choose the Compile tab. This is where you will be adding the header directories.
 There are two directories that hold the header files for the example HELICS build.
@@ -28,13 +28,14 @@ It is shown in the following pictures.
 
 Make sure you double check that you get all the directories that hold the HELICS header files.
 
-![](/config_guide/ide/demo-pictures/demo8.PNG)
+<img alt="demo8" src=/config_guide/ide/demo-pictures/demo8.PNG width="525"><br>
 
-![](/config_guide/ide/demo-pictures/demo9.PNG)
+<img alt="demo9" src=/config_guide/ide/demo-pictures/demo9.PNG width="525"><br>
 
-![](/config_guide/ide/demo-pictures/demo9_1.PNG)
+<img alt="demo9_1" src=/config_guide/ide/demo-pictures/demo9_1.PNG width="525"><br>
 
-![](/config_guide/ide/demo-pictures/demo9_2.PNG)
+<img alt="demo9_2" src=/config_guide/ide/demo-pictures/demo9_2.PNG width="525"><br>
+
 
 Next we will go to the Link Tab. This is where you will adding your library. You will only be entering the name of the library here. Omit the .lib suffix.
 
