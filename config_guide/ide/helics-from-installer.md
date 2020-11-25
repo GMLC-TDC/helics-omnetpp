@@ -44,11 +44,17 @@ This will open up to a window. Navigate to Compile:
 
   Add > File system .. > Select directories:
 
-    <img alt="config-file6" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol2.PNG width="550"> <br>
+    <img alt="config-file6" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol2.PNG width="550">
 
-    <img alt="config-file7" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol5.PNG width="550"> <br>
+    <br>
 
-    <img alt="config-file8" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol6.PNG width="550"> <br>
+    <img alt="config-file7" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol5.PNG width="550">
+
+    <br>
+
+    <img alt="config-file8" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol6.PNG width="550">
+
+    <br>
 
 3. Once the Include directories have been added, navigate to Libraries Tab. Here you will add the full path to the HELICS library:
 
