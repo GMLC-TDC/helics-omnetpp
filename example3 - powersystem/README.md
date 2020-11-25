@@ -1,6 +1,6 @@
 # Power System Example
 
-**~ Example is not yet completed ~**
+***Example is not completed!***
 
 What you will find in folders:
 
