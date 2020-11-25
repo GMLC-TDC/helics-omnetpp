@@ -17,14 +17,30 @@ This will download a zipped file which needs to be extracted under a directory t
 
 Depending on which OS you are using, you will be need to follow the instructions directed in the [Install Guide](https://doc.omnetpp.org/omnetpp/InstallGuide.pdf) on the OMNeT++ website.
 
-###### *\*OMNeT++ can be ran using their MSYS2 commandline tool or their IDE. Both have been embedded with their simulation kernel which is based on C++.\**
+###### **OMNeT++ can be ran using their MSYS2 commandline tool or their IDE. Both have been embedded with their simulation kernel which is based on C++.**
 
 ## Tips on running examples:
+
+- OMNET++ examples cannot be ran simply  by importing the entire example into the workspace. You must create an OMNET++ project first and then import the necessary files.
+  - In OMNET++ workspace, Go to File > New > OMNeT++ Project
+  - Once Project is created, right click on project name > Import.
+    - General > Filesystem > Choose directory that holds files that need to be imported i.e. .cc, .ned, .ini files.
 
 - HELICS library and include paths need to be added to Path and Symbols in OMNeT++ IDE and also under Properties/OMNeT++/Makemake/Build option.
 (For a step by step direction, please go to [config_guide](/config_guide) directory)
 
 - Make sure that helics_broker is accepting the appropriate number of federates.
+
+## Directory Navigation
+
+- Config_guide
+  - cmdline : Instructions on how to run OMNeT++ with HELICS on the commandline
+  - ide : Instructions on how to run OMNeT++ with HELICS in the IDE
+    - helics-from-installer : use this guide if you installed HELICS through the installer
+    - helics-from-source : use this guide if you installed HELICS from source (git)
+- Install-guide : Additional instructions for HELICS and OMNeT++
+  - helics-installer-guide : Instructions to install HELICS using the installer / Break down of the HELICS directories needed for OMNeT++
+  - omnetpp-setup-guide : Instructions on how to start a new OMNeT++ project (This step is needed before running any OMNeT++ project, whether you're importing a project or starting from scratch).
 
 ## Release
 

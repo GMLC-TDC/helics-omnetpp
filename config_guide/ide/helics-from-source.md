@@ -2,8 +2,11 @@
 
 *This guide is specific to the IDE configuration to link HELICS library and headers to OMNET++*
 
-Ensure that you have already created an OMNET++ project before continuing onto this step.
-Please note that the example seen in the pictures are done with example1/simpletictoc code.
+Ensure that you have already created an OMNET++ project before continuing onto this step
+
+- If you have not done so and need help, go to [omnetpp-setup-guide](../install-guide/omnetpp-setup-guide))
+
+Please note that the example seen in the pictures are done with example1/simpletictoc code and that the HELICS version installed is obtained through the source (git).
 
 Determine where your HELICS library and header files are. This can vary depending on the location you chose during your HELICS build.
 Make note of the locations and the name of the library.
@@ -12,7 +15,7 @@ Make note of the locations and the name of the library.
 
 In order to get to the Makemake options, you will go to Project/Properties.
 
-<img alt="demo5.PNG" src=/config_guide/ide/demo-pictures/demo5.PNG width="550>
+<img alt="demo5.PNG" src=/config_guide/ide/demo-pictures/demo5.PNG width="550">
 
 Then you will choose OMNET++ on the left side bar and choose Makemake.
 
@@ -47,7 +50,7 @@ Please see pictures below to see what this looks like.
 
 After that step, we are finished with adding the necessary paths and library to the makefile generation option. Click Apply to update the settings. Do not close just yet.
 
-## Step 2: Adding HELICS library and HELICS library/header paths to Path and Symbols.
+### Step 2: Adding HELICS library and HELICS library/header paths to Path and Symbols.
 
 While still in Projects/Properties, on the side bar choose C/C++ General. Then choose Paths and Symbols.
 
@@ -79,7 +82,7 @@ See the following pictures.
 
 Be sure to click "Apply" before closing everything.
 
-## Step 3: Adding the HELICS and ZMQ dynamically-linked libraries to the project.
+### Step 3: Adding the HELICS and ZMQ dynamically-linked libraries to the project.
 
 Go to "File" or right click on the project. Choose "Import" -> "General" -> "File System" and browse for the directories that the DLL are in.
 
@@ -94,5 +97,3 @@ Select the file and import it into the project.
 This will automatically add the libraries to the Binaries folder of the project.
 
 ![](/config_guide/ide/demo-pictures/demo18.PNG)
-
-This should successfully link HELICS to OMNET++.
