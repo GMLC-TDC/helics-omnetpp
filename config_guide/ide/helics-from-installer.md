@@ -40,21 +40,15 @@ This will open up to a window. Navigate to Compile:
 2. In the Includes tab, we will also be adding HELICS include/header directories here.
 
   Make sure to check 'Add to all configurations' and 'Add to all languages'
-  - This will save you the troulbe of having to add the directories again in GNU C and GNU C++
+  - This will save you the trouble of having to add the directories again in GNU C and GNU C++
 
   Add > File system .. > Select directories:
 
-    <img alt="config-file6" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol2.PNG width="550">
+  <img alt="config-file6" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol2.PNG width="550">
 
-    <br>
+  <img alt="config-file7" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol5.PNG width="550">
 
-    <img alt="config-file7" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol5.PNG width="550">
-
-    <br>
-
-    <img alt="config-file8" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol6.PNG width="550">
-
-    <br>
+  <img alt="config-file8" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol6.PNG width="550">
 
 3. Once the Include directories have been added, navigate to Libraries Tab. Here you will add the full path to the HELICS library:
 
