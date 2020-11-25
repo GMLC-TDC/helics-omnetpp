@@ -38,8 +38,7 @@ This will open up to a window. Navigate to Compile:
     <img alt="config-file5" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol1.PNG width="550"> <br>
 
 2. In the Includes tab, we will also be adding HELICS include/header directories here.
-
-  Make sure to check 'Add to all configurations' and 'Add to all languages'
+Make sure to check 'Add to all configurations' and 'Add to all languages'
   - This will save you the trouble of having to add the directories again in GNU C and GNU C++
 
   Add > File system .. > Select directories:
