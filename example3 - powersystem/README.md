@@ -1,5 +1,7 @@
 # Power System Example
 
+**~ Example is not yet completed ~**
+
 What you will find in folders:
 
 1. Comms : The communication model (as in following research: ) represented in OMNET++
