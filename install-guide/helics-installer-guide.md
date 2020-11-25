@@ -2,17 +2,17 @@
 
 1. This is what you should see when you run your HELICS installer:
 
-    <img alt="installer-1" src=/config_guide/ide/demo-pictures/helics-installer-step1.PNG width="550"> <br>
+  <img alt="installer-1" src=/config_guide/ide/demo-pictures/helics-installer-step1.PNG width="550"> <br>
 
 2. Next > 'I Agree'.
 
 3. Choose whether or not you want HELICS to be added to your path. Then click 'Next >' :
 
-    <img alt="installer-2" src=/config_guide/ide/demo-pictures/helics-installer-step2.PNG width="550"> <br>
+  <img alt="installer-2" src=/config_guide/ide/demo-pictures/helics-installer-step2.PNG width="550"> <br>
 
 4. Choose a destination folder for the HELICS installation - one that you easy access to - then click 'Next >':
 
-    <img alt="installer-3" src=/config_guide/ide/demo-pictures/helics-installer-step3.PNG width="550"> <br>
+  <img alt="installer-3" src=/config_guide/ide/demo-pictures/helics-installer-step3.PNG width="550"> <br>
 
 5. Continue clicking next and this will finish install HELICS onto your system.
 
