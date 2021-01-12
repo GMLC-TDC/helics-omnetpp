@@ -194,12 +194,23 @@ void Federate::convertToAgentStrings(std::vector<Federate::Relay> &protectionVec
 
 }
 
+void Federate::parseMsg(std::vector<std::string> &separateStrings, std::string msg){
+
+    std::stringstream parse(msg);
+
+    std::string portion;
+
+    while (getline(parse, portion, ','))
+    {
+        separateStrings.push_back(portion);
+    }
+
+}
+
+
 void Federate::checkMsgUpdate()
 {
-
-    double omnetTime = SIMTIME_DBL(simTime());
-
-    currenttime = helicsFederateRequestTime (commFed, omnetTime, &err);
+    currenttime = helicsFederateRequestTime (commFed, 2.0, &err);
 
     if (err.error_code != helics_ok)
     {
@@ -211,110 +222,117 @@ void Federate::checkMsgUpdate()
     }
     msgUpdated = helicsEndpointHasMessage(commsys);
     std::cout << msgUpdated << std::endl;
+
     if (msgUpdated)
     {
+        if (relayCodes.size() > 0){
+            relayCodes.clear();
+        }
         int numMessages = helicsEndpointPendingMessages(commsys);
+        std::cout << "This is total num of messages: " << numMessages << std::endl;
         while (numMessages != 0)
         {
             receivedMsg = helicsEndpointGetMessageObject(commsys);
-            std::string translate = helicsMessageGetString(receivedMsg);
-            buffer.push_back(translate);
+            std::string msgSource = helicsMessageGetSource(receivedMsg);
+            std::cout << "Original source: " << msgSource << std::endl;
 
-            numMessages--;
+            std::string msg = helicsMessageGetString(receivedMsg);
+
+            int mtype;
+            int mcode;
+            std::vector<std::string> strings;
+
+            parseMsg (strings, msg);
+
+            std::string mtypeString = strings[0].substr(6, strings[0].size() - 1);
+            mtype = std::stoi(mtypeString);
+
+            std::string mcodeString = strings[1].substr(6, strings[1].size()-1);
+            mcode = std::stoi(mcodeString);
+
+            std::cout << "This is mytpe: " << mtype << std::endl;
+            std::cout << "This is mcode: " << mcode << std::endl;
+
+            std::pair<int, int> codes;
+            codes.first = mtype;
+            codes.second = mcode;
+
+
+            relayCodes[msgSource] = codes;
+            std::cout << numMessages << std::endl;
+            --numMessages;
         }
     }
     else
     {
-        printf("No Message Received");
+        printf("No Message Received\n");
+        helicsFederateFinalize(commFed, &err);
+        helicsFederateFree(commFed);
+        helicsCloseLibrary();
+        endSimulation();
     }
 }
 
-void Federate::findRemoteFault(std::string faultLine)
+void Federate::isolatedMsg(std::string relay)
 {
-    std::stringstream tokenize(faultLine);
+    std::cout << "Relay: " << relay << std::endl;
+    std::string isoMsg = "mtype:2,mcode:410";
+    helicsMessageSetDestination(responseMsg, relay.c_str(), &err);
+    helicsMessageSetData(responseMsg, isoMsg.c_str(), 128, &err);
+    helicsEndpointSendMessageObject(commsys, responseMsg, &err);
 
-    std::vector<std::string> buffTemp;
-    std::string newString;
-    std::string temp;
-    while (getline(tokenize, temp, '_'))
-    {
-        buffTemp.push_back(temp);
-    }
+    std::cout << "Message sent!" << std::endl;
 
 
-    int source = std::atoi(buffTemp[1].c_str());
-    int dest = std::atoi(buffTemp[2].c_str());
-    for (int i = 0; i < Edges.size(); i ++)
-    {
-        if (Edges[i].second == source && Edges[i].first != dest)
-        {
-            std::string remoteAdd;
-            remoteAdd.append("_");
-            remoteAdd.append(std::to_string(Edges[i].first));
-            remoteAdd.append("_");
-            remoteAdd.append(std::to_string(Edges[i].second));
-            remoteFault.push_back(remoteAdd);
-        }
-
-    }
-
-    std::cout << "This is the remote faults: " << std::endl;
-    for (int i = 0; i < remoteFault.size(); i++)
-    {
-        std::cout << remoteFault[i] << std::endl;
-    }
 
 }
 
-/* Assume that message sent is the transmission line that failed to isolate */
-void Federate::sendOutMessage()
+
+void Federate::sendOutMessage(std::vector<std::string> names, std::vector<int> code, std::vector<int> type)
 {
-
-    for (int i = 0; i < buffer.size(); i++)
+    cModule *parent = getParentModule();
+    for(int i = 0; i < names.size(); i++)
     {
-        // in the format of _failedbus_busAtEndOfLine
-        std::string currentFaultLine = buffer[i];
-        // reversed agentNode
-        std::string localFault = splitRearrange(buffer[i]);
-
-        std::cout << "Failed to isolate: " << currentFaultLine << std::endl;
-        std::cout << "Local Fault: " << localFault << std::endl;
-        FaultMsg *faultLocal = new FaultMsg;
-        faultLocal->setSrcNodeName(cSimpleModule::getName());
-        faultLocal->setMsgType(SETLOCAL);
-        cModule *parent = getParentModule();
-        cModule *local = parent->getSubmodule(localFault.c_str());
-        sendDirect(faultLocal, local, "fromFed");
-
-        findRemoteFault(currentFaultLine);
-
-        for (int j = 0; j < remoteFault.size(); j++)
-        {
-            FaultMsg *faultRemote = new FaultMsg;
-            faultRemote->setSrcNodeName(cSimpleModule::getName());
-            faultRemote->setMsgType(SETREMOTE);
-            cModule *remote = parent->getSubmodule(remoteFault[j].c_str());
-            sendDirect(faultRemote, remote, "fromFed");
-        }
-
+        std::cout << names[i] << ": " << code[i] << std::endl;
     }
+
+    for(int i = 0; i < names.size(); i++)
+    {
+        FaultMsg *sendAgent = new FaultMsg;
+        sendAgent->setSrcNodeName(cSimpleModule::getName());
+
+        if (code[i] == LOCAL_FAULT_EVENT)
+        {
+            sendAgent->setMsgType(SETLOCAL);
+        }
+        else if (code[i] == REMOTE_FAULT_EVENT)
+        {
+            sendAgent->setMsgType(SETREMOTE);
+        }
+        cModule *agent = parent->getSubmodule(names[i].c_str());
+        sendDirect(sendAgent, agent, "toAgent");
+    }
+
 }
+
+
 
 void Federate::initialize()
 {
     infoStruct = helicsCreateFederateInfo();
     helicsFederateInfoSetCoreTypeFromString (infoStruct, "zmq", &err);
     helicsFederateInfoSetCoreInitString (infoStruct, fedinitstring, &err);
-    helicsFederateInfoSetTimeProperty( infoStruct, helics_property_time_period, 1.0, &err);
+    helicsFederateInfoSetTimeProperty( infoStruct, helics_property_time_period, 2.0, &err);
 
-    commFed = helicsCreateMessageFederate("Comms.exe", infoStruct, &err); // fed name might need to be changed depending on the executable name
+    commFed = helicsCreateMessageFederate("layoutTest.exe", infoStruct, &err);
 
     // initializes endpoint in federate
-    commsys = helicsFederateRegisterEndpoint(commFed, "commEndpt", NULL, &err );
+    commsys = helicsFederateRegisterGlobalEndpoint(commFed, "commEndpt", NULL, &err );
+
 
     // initializes msg objects in federate
     receivedMsg = helicsFederateCreateMessageObject(commFed, &err);
-    //responseMsg = helicsFederateCreateMessageObject(commFed, &err);
+    responseMsg = helicsFederateCreateMessageObject(commFed, &err);
 
     //initializes the federate
     helicsFederateEnterInitializingMode (commFed, &err);
@@ -342,18 +360,92 @@ void Federate::initialize()
 
     checkMsgUpdate();
 
-    sendOutMessage();
+
+    std::map<std::string, std::pair<int, int>>::iterator it;
+    std::vector<std::string> relayNames;
+    std::vector<int> msgC;
+    std::vector<int> msgT;
+
+    for(it = relayCodes.begin(); it != relayCodes.end(); it++ )
+    {
+        relayNames.push_back(it->first);
+        msgT.push_back(it->second.first);
+        msgC.push_back(it->second.second);
+    }
+
+    if(relayNames.size() == 1 && msgC[0] == 403)
+    {
+        std::cout << "Fault isolated. Do nothing." << std::endl;
+        isolatedMsg(relayNames[0]);
+
+    }
+    else
+    {
+        std::cout << "Fault is not isolated! DO YOUR MAGIC!!" << std::endl;
+        sendOutMessage(relayNames, msgC, msgT);
+    }
 
 
 }
 
 void Federate::handleMessage(cMessage *msg)
 {
-
+    std::cout << "Message from agent node received!" << std::endl;
+    std::string agentNode = ((FaultMsg *)msg)->getSrcNodeName();
+    std::string actionMsg = ((FaultMsg *)msg)->getMsg();
+    pgActions[agentNode] = actionMsg;
+    cancelAndDelete(((FaultMsg *)msg));
 }
 
 void Federate::finish()
 {
+
+
+    std::map<std::string, std::string>::iterator pgIterate;
+    for(pgIterate = pgActions.begin(); pgIterate != pgActions.end(); pgIterate++ ){
+
+        std::string relay = pgIterate->first;
+        std::cout << "Relay: " << relay << std::endl;
+        std::string isoMsg = pgIterate->second;
+        helicsMessageSetDestination(responseMsg, relay.c_str(), &err);
+        helicsMessageSetData(responseMsg, isoMsg.c_str(), 128, &err);
+        helicsEndpointSendMessageObject(commsys, responseMsg, &err);
+        std::cout << "Federate Message sent!" << std::endl;
+    }
+
+
+    checkMsgUpdate();
+
+    std::map<std::string, std::pair<int, int>>::iterator it;
+    std::vector<std::string> relayNames;
+    std::vector<int> msgC;
+    std::vector<int> msgT;
+
+    for(it = relayCodes.begin(); it != relayCodes.end(); it++ )
+    {
+        relayNames.push_back(it->first);
+        msgT.push_back(it->second.first);
+        msgC.push_back(it->second.second);
+    }
+
+    for (int i = 0; i < relayNames.size(); i++)
+    {
+        if (msgC[i] == 405){
+            std::cout << relayNames[i] << " has been tripped." << std::endl;
+        }
+        else if (msgC[i] == 406)
+        {
+            std::cout << relayNames[i] << " has been closed." << std::endl;
+        }
+        else if (msgC[i] == 407){
+            std::cout << "Local fault cleared at" << relayNames[i] << std::endl;
+        }
+        else if (msgC[i] == 408){
+            std::cout << "Remote fault cleared at" << relayNames[i] << std::endl;
+        }
+    }
+
+    relayCodes.clear();
     helicsFederateFinalize(commFed, &err);
     helicsFederateFree(commFed);
     helicsCloseLibrary();

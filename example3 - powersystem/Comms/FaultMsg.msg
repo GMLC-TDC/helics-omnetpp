@@ -20,18 +20,36 @@
 enum State { 
     NORMAL = 0;
     IDLE = 1;
-    WAIT =2;
+    WAIT = 2;
     OOS = 3;
     UNINITIALIZED = 4; 
 }
 
+enum MSGCODE{
+    //PowerGrid commands for Comms
+    LOCAL_FAULT_EVENT = 403;
+    REMOTE_FAULT_EVENT = 404;
+    //Comms commands for Power Grid 
+    BREAKER_TRIP_COMMAND = 409;
+    BREAKER_CLOSE_COMMAND = 410; 
+    BREAKER_OOS_COMMAND = 411;
+    //PowerGrid confirmation to Comms    
+    BREAKER_TRIP_EVENT = 405;
+    BREAKER_CLOSE_EVENT = 406; 
+    LOCAL_FAULT_CLEARED = 407; 
+    REMOTE_FAULT_CLEARED = 408; 
+}
+
 enum MSGTYPE { 
+    //Msgtype between PowerGrid and Comms
+    pingMessageType = 1;
+    replyMessageType = 2; 
     
+    //MsgType within Comms System
     SETLOCAL = 0; 
-    SETREMOTE = 1; 
-    BACKUPRELAY = 2;
-    REQUEST = 3;
-    RESPONSE = 4;
+    SETREMOTE = 3; 
+    REQUEST = 4;
+    RESPONSE = 5;
 }
 
 packet FaultMsg {

@@ -18,7 +18,7 @@
 
 using namespace omnetpp;
 
-class AgentNodes: public cSimpleModule, public cTopology
+class AgentNodes: public cSimpleModule, public cTopology, public SimTime
 {
 private:
     // current state of Agent Node
@@ -40,7 +40,9 @@ private:
     std::map<std::string, State> peerMap;
     std::vector<std::string> backUpRelays;
     int totalPeerNodes = 0;
-    int tripCount = 0;
+
+
+
 
 protected:
     /* Initializes variables for simulation */
@@ -86,7 +88,9 @@ public:
     void agentRequested(FaultMsg *receivedMsg);
 
     /*Agent Node ("Wait" node) is given response by peers, proceed with */
-    void responseToWait(FaultMsg *receivedMsg);
+    void processResponseFromSlaveAgent(FaultMsg *receivedMsg);
+
+
 };
 
 
