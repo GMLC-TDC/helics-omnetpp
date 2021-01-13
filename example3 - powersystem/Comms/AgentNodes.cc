@@ -223,8 +223,7 @@ void AgentNodes::setLocalFault(FaultMsg *receivedMsg)
     FaultMsg *msg = new FaultMsg;
     msg->setSrcNodeName(cSimpleModule::getName());
     msg->setMsg("mtype:2,mcode:410");
-    sendDirect(msg, federate, "toFed");
-    std::cout << "Message sent!" << std::endl;
+    sendDirect(msg, propagationDelay, transmissionDuration, federate, "toFed");
 
     setState(IDLE);
 
@@ -264,7 +263,7 @@ void AgentNodes::setRemoteFault(FaultMsg *receivedMsg)
         requestMsg->setNodeState(getState());
         cModule *parent = getParentModule();
         cModule *agentRelays = parent->getSubmodule(relays[i].c_str());
-        sendDirect(requestMsg, agentRelays, "toAgent");
+        sendDirect(requestMsg, propagationDelay, transmissionDuration, agentRelays, "toAgent");
     }
 }
 
@@ -279,7 +278,7 @@ void AgentNodes::agentRequested(FaultMsg *receivedMsg)
     responseBack->setMsgType(RESPONSE);
     responseBack->setNodeState(getState());
     cModule *responseToNode = parent->getSubmodule(receivedMsg->getSrcNodeName());
-    sendDirect(responseBack, responseToNode, "toAgent");
+    sendDirect(responseBack, propagationDelay, transmissionDuration, responseToNode, "toAgent");
 }
 
 // Function processes the response from the slave agent nodes
@@ -297,36 +296,44 @@ void AgentNodes::processResponseFromSlaveAgent(FaultMsg *receivedMsg)
         {
             setState(IDLE);
             msg->setMsg("mtype:2,mcode:409");
-            sendDirect(msg, federate, "toFed");
-            std::cout << "Message sent!" << std::endl;
+            sendDirect(msg, propagationDelay, transmissionDuration, federate, "toFed");
+            totalPeerNodes = -1;
+        }
+        else
+        {
+            delete msg;
         }
 
     }
+    else if (totalPeerNodes == -1){
+        delete msg;
+    }
     else
     {
-        if (peerMap[respondedPeerNode] == UNINITIALIZED)
+        if (peerMap[respondedPeerNode] == UNINITIALIZED && totalPeerNodes > 0)
         {
             peerMap[respondedPeerNode] = (State) receivedMsg->getNodeState();
             totalPeerNodes--;
+            delete msg;
         }
 
-        if (totalPeerNodes <= 0) // this is the same as an agent node being blocked
+        if (totalPeerNodes == 0) // this is the same as an agent node being blocked
         {
             std::cout << cSimpleModule::getName() << " needs to be serviced because no other faults sensed" << std::endl;
             setState(OOS);
             msg->setMsg("mtype:2,mcode:411");
-            sendDirect(msg, federate, "toFed");
-            std::cout << "Message sent!" << std::endl;
+            sendDirect(msg, propagationDelay, transmissionDuration, federate, "toFed");
         }
 
+
     }
+
 
 }
 
 //Initializes the topology needed for connections between agent nodes
 void AgentNodes::initialize()
 {
-
     processElectricTopo();
 
 }
@@ -334,6 +341,7 @@ void AgentNodes::initialize()
 // Message handling between agent nodes
 void AgentNodes::handleMessage(cMessage *msg)
 {
+
 
     if (((FaultMsg *)msg)->getMsgType() == SETLOCAL)
     {
@@ -365,5 +373,6 @@ void AgentNodes::handleMessage(cMessage *msg)
 // At end of simulation check which to see which nodes have been altered
 void AgentNodes::finish()
 {
+
 
 }

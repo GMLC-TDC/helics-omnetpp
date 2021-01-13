@@ -35,13 +35,12 @@ private:
     std::vector<std::pair<int,int>> Edges;
 
 
-    //std::vector<Relay> relayProtection;
-    //std::vector<std::string> relays;
     std::map<std::string, State> peerMap;
     std::vector<std::string> backUpRelays;
     int totalPeerNodes = 0;
 
-
+    simtime_t transmissionDuration = 0;
+    simtime_t propagationDelay = simTime() + 1.0e-9;
 
 
 protected:

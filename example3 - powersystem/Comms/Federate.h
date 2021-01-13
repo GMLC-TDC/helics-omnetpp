@@ -54,6 +54,10 @@ private:
     std::map<std::string, std::string> pgActions;
 
 
+    simtime_t transmissionDuration = 0;
+    simtime_t propagationDelay = simTime() + 1.0e-9;
+
+
 protected:
     /* Initializes variables for simulation */
     virtual void initialize();

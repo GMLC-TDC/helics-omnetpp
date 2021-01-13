@@ -210,7 +210,7 @@ void Federate::parseMsg(std::vector<std::string> &separateStrings, std::string m
 
 void Federate::checkMsgUpdate()
 {
-    currenttime = helicsFederateRequestTime (commFed, 2.0, &err);
+    currenttime = helicsFederateRequestTime (commFed, 1.0, &err);
 
     if (err.error_code != helics_ok)
     {
@@ -221,7 +221,7 @@ void Federate::checkMsgUpdate()
         fprintf(stdout, "HELICS granted time: %f\n", currenttime);
     }
     msgUpdated = helicsEndpointHasMessage(commsys);
-    std::cout << msgUpdated << std::endl;
+    // std::cout << msgUpdated << std::endl;
 
     if (msgUpdated)
     {
@@ -229,12 +229,11 @@ void Federate::checkMsgUpdate()
             relayCodes.clear();
         }
         int numMessages = helicsEndpointPendingMessages(commsys);
-        std::cout << "This is total num of messages: " << numMessages << std::endl;
         while (numMessages != 0)
         {
             receivedMsg = helicsEndpointGetMessageObject(commsys);
             std::string msgSource = helicsMessageGetSource(receivedMsg);
-            std::cout << "Original source: " << msgSource << std::endl;
+            //std::cout << "Original source: " << msgSource << std::endl;
 
             std::string msg = helicsMessageGetString(receivedMsg);
 
@@ -250,8 +249,8 @@ void Federate::checkMsgUpdate()
             std::string mcodeString = strings[1].substr(6, strings[1].size()-1);
             mcode = std::stoi(mcodeString);
 
-            std::cout << "This is mytpe: " << mtype << std::endl;
-            std::cout << "This is mcode: " << mcode << std::endl;
+            //std::cout << "This is mytpe: " << mtype << std::endl;
+            //std::cout << "This is mcode: " << mcode << std::endl;
 
             std::pair<int, int> codes;
             codes.first = mtype;
@@ -259,7 +258,6 @@ void Federate::checkMsgUpdate()
 
 
             relayCodes[msgSource] = codes;
-            std::cout << numMessages << std::endl;
             --numMessages;
         }
     }
@@ -280,9 +278,6 @@ void Federate::isolatedMsg(std::string relay)
     helicsMessageSetDestination(responseMsg, relay.c_str(), &err);
     helicsMessageSetData(responseMsg, isoMsg.c_str(), 128, &err);
     helicsEndpointSendMessageObject(commsys, responseMsg, &err);
-
-    std::cout << "Message sent!" << std::endl;
-
 
 
 }
@@ -309,20 +304,22 @@ void Federate::sendOutMessage(std::vector<std::string> names, std::vector<int> c
         {
             sendAgent->setMsgType(SETREMOTE);
         }
+
         cModule *agent = parent->getSubmodule(names[i].c_str());
-        sendDirect(sendAgent, agent, "toAgent");
+        sendDirect(sendAgent, propagationDelay, transmissionDuration, agent, "toAgent");
     }
 
 }
 
 
-
 void Federate::initialize()
 {
+
+
     infoStruct = helicsCreateFederateInfo();
     helicsFederateInfoSetCoreTypeFromString (infoStruct, "zmq", &err);
     helicsFederateInfoSetCoreInitString (infoStruct, fedinitstring, &err);
-    helicsFederateInfoSetTimeProperty( infoStruct, helics_property_time_period, 2.0, &err);
+    helicsFederateInfoSetTimeProperty( infoStruct, helics_property_time_period, 1.0, &err);
 
     commFed = helicsCreateMessageFederate("layoutTest.exe", infoStruct, &err);
 
@@ -390,11 +387,11 @@ void Federate::initialize()
 
 void Federate::handleMessage(cMessage *msg)
 {
-    std::cout << "Message from agent node received!" << std::endl;
+    //std::cout << "Message from agent node received!" << std::endl;
     std::string agentNode = ((FaultMsg *)msg)->getSrcNodeName();
     std::string actionMsg = ((FaultMsg *)msg)->getMsg();
     pgActions[agentNode] = actionMsg;
-    cancelAndDelete(((FaultMsg *)msg));
+    delete ((FaultMsg *)msg);
 }
 
 void Federate::finish()
@@ -405,12 +402,12 @@ void Federate::finish()
     for(pgIterate = pgActions.begin(); pgIterate != pgActions.end(); pgIterate++ ){
 
         std::string relay = pgIterate->first;
-        std::cout << "Relay: " << relay << std::endl;
+        //std::cout << "Relay: " << relay << std::endl;
         std::string isoMsg = pgIterate->second;
         helicsMessageSetDestination(responseMsg, relay.c_str(), &err);
         helicsMessageSetData(responseMsg, isoMsg.c_str(), 128, &err);
         helicsEndpointSendMessageObject(commsys, responseMsg, &err);
-        std::cout << "Federate Message sent!" << std::endl;
+
     }
 
 
