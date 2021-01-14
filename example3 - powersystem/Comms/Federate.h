@@ -14,10 +14,12 @@
 #include<vector>
 #include<sstream>
 #include<algorithm>
+#include<string>
+
 
 using namespace omnetpp;
 
-class Federate: public cSimpleModule, public cTopology
+class Federate: public cSimpleModule, public cTopology, public SimTime
 {
 private:
     helics_federate_info infoStruct; // info struct for federate
@@ -28,10 +30,10 @@ private:
     helics_bool msgUpdated; // returns true if updated, returns false if not
 
     helics_endpoint commsys; // name of federate endpoint
-    helics_message_object receivedMsg; // message object for federate endpoint
+    helics_message_object receivedMsg;
+    helics_message_object responseMsg;
 
-    std::vector<std::string> buffer; // buffer for messages sent from PowerGrid Fed
-
+    //double omnetTime = SIMTIME_DBL(simTime());
     struct Relay
     {
         std::pair<int, int> relayPair;
@@ -45,11 +47,15 @@ private:
     /* Every Relay connected to Agent Node */
     std::vector<std::string> relayVect;
 
-    /* Remote Faults of given fault Line */
-    std::vector<std::string> remoteFault;
+    /* A mapping of the relays from Power System messages */
+    std::map<std::string, std::pair<int,int>> relayCodes;
 
-    /* Local Fault of given fault Line */
+    // Map of agent nodes and actions for powergrid
+    std::map<std::string, std::string> pgActions;
 
+
+    simtime_t transmissionDuration = 0;
+    simtime_t propagationDelay = simTime() + 1.0e-9;
 
 
 protected:
@@ -61,6 +67,7 @@ protected:
 
     /* Destructor for simulation - releases/destroys any variables */
     virtual void finish();
+
 
 public:
 
@@ -82,13 +89,16 @@ public:
     /* Function translates Relay Struct into string and adds to Relay Vector */
      void convertToAgentStrings(std::vector<Relay> &protectionVect);
 
+    /* parse message coming from Helics Fed */
+    void parseMsg(std::vector<std::string> &separateStrings, std::string msg);
+
     /* Function queries broker for any new messages */
     void checkMsgUpdate();
 
-    void findRemoteFault(std::string faultLine);
+    void isolatedMsg(std::string relay);
 
     /* Function sends out alert/state message to Agent Nodes*/
-    void sendOutMessage();
+    void sendOutMessage(std::vector<std::string> names, std::vector<int> code, std::vector<int> type);
 
 
 };

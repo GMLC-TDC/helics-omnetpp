@@ -188,11 +188,26 @@ EXECUTE_ON_STARTUP(
 )
 
 EXECUTE_ON_STARTUP(
+    omnetpp::cEnum *e = omnetpp::cEnum::find("MSGCODE");
+    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("MSGCODE"));
+    e->insert(LOCAL_FAULT_EVENT, "LOCAL_FAULT_EVENT");
+    e->insert(REMOTE_FAULT_EVENT, "REMOTE_FAULT_EVENT");
+    e->insert(BREAKER_TRIP_COMMAND, "BREAKER_TRIP_COMMAND");
+    e->insert(BREAKER_CLOSE_COMMAND, "BREAKER_CLOSE_COMMAND");
+    e->insert(BREAKER_OOS_COMMAND, "BREAKER_OOS_COMMAND");
+    e->insert(BREAKER_TRIP_EVENT, "BREAKER_TRIP_EVENT");
+    e->insert(BREAKER_CLOSE_EVENT, "BREAKER_CLOSE_EVENT");
+    e->insert(LOCAL_FAULT_CLEARED, "LOCAL_FAULT_CLEARED");
+    e->insert(REMOTE_FAULT_CLEARED, "REMOTE_FAULT_CLEARED");
+)
+
+EXECUTE_ON_STARTUP(
     omnetpp::cEnum *e = omnetpp::cEnum::find("MSGTYPE");
     if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("MSGTYPE"));
+    e->insert(pingMessageType, "pingMessageType");
+    e->insert(replyMessageType, "replyMessageType");
     e->insert(SETLOCAL, "SETLOCAL");
     e->insert(SETREMOTE, "SETREMOTE");
-    e->insert(BACKUPRELAY, "BACKUPRELAY");
     e->insert(REQUEST, "REQUEST");
     e->insert(RESPONSE, "RESPONSE");
 )

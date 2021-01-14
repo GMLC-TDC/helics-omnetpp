@@ -20,5 +20,5 @@ simple AgentNodes
 {
     gates: 
         inout gate[];
-        input fromFed @directIn;  
+        input toAgent @directIn;  
 }

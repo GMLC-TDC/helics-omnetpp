@@ -13,9 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-//
-// TODO auto-generated type
-//
+
 
 
 import inet.common.misc.ThruputMeteringChannel;
@@ -28,6 +26,7 @@ simple Federate
 {
     gates:
         inout gate[];
+        input toFed @directIn; 
 }
 
 
