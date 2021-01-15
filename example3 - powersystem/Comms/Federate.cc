@@ -9,6 +9,8 @@
 
 Define_Module(Federate);
 
+// Creates the topology of the IEEE 39-bus system
+// This function forms the connections for entire system : federate, agentnodes, etc;
 void Federate::processElectricTopo()
 {
     cTopology electricTopo;
@@ -54,6 +56,7 @@ std::string Federate::splitRearrange(std::string x)
     return newString;
 }
 
+//Function creates relay associated with given node
 Federate::Relay Federate::createRelay(std::string nameOfNode)
 {
     Relay thisRelay;
@@ -78,6 +81,8 @@ Federate::Relay Federate::createRelay(std::string nameOfNode)
 
 }
 
+// initRelay : relay of current agent node
+// returns an array of all possible fault lines that's associated with initRelay
 std::vector<std::pair<int,int>> Federate::possibleFaultLines(Relay &initRelay)
 {
     std::vector<std::pair<int,int>> faultLines;
@@ -99,6 +104,10 @@ std::vector<std::pair<int,int>> Federate::possibleFaultLines(Relay &initRelay)
 
 }
 
+// This function finds all the responsible relays for possible faulted lines
+// thisRelay : current Relay that is being queried
+// possibleFaultLines : the array of possibleFaultLines of thisRelay
+// return an array of all responsible relays for thisRelay
 void Federate::responsibleRelays(Relay &thisRelay, std::vector<std::pair<int,int>> &possibleFaultLines)
 {
     std::vector<Relay> relays;
@@ -207,7 +216,7 @@ void Federate::parseMsg(std::vector<std::string> &separateStrings, std::string m
 
 }
 
-
+// Function checks the messages coming from Power Grid federate
 void Federate::checkMsgUpdate()
 {
     currenttime = helicsFederateRequestTime (commFed, 1.0, &err);
@@ -282,7 +291,7 @@ void Federate::isolatedMsg(std::string relay)
 
 }
 
-
+// Function sends out messages to agent nodes when it is determined that fault isn't isolated
 void Federate::sendOutMessage(std::vector<std::string> names, std::vector<int> code, std::vector<int> type)
 {
     cModule *parent = getParentModule();
@@ -447,4 +456,3 @@ void Federate::finish()
     helicsFederateFree(commFed);
     helicsCloseLibrary();
 }
-
