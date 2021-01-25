@@ -4,7 +4,7 @@
 
 Ensure that you have already created an OMNET++ project before continuing onto this step
 
-- If you have not done so and need help, go to [omnetpp-setup-guide](../../install-guide/omnetpp-setup-guide))
+- If you have not done so and need help, go to [omnetpp-setup-guide](../../install-guide/omnetpp-setup-guide.md)
 
 Please note that the example seen in the pictures are done with example1/simpletictoc code and that the HELICS version installed is obtained through the source (git).
 
