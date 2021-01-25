@@ -4,11 +4,11 @@
 
 Ensure that you have already created an OMNET++ project before continuing onto this step.
 
-- If you have not done so and need help, go to [omnetpp-setup-guide](../install-guide/omnetpp-setup-guide)
+- If you have not done so and need help, go to [omnetpp-setup-guide](../../install-guide/omnetpp-setup-guide)
 
 Please note that the example seen in the pictures are done with example1/simpletictoc code and that the HELICS version installed is obtained through the installer method.
 
-- For steps on navigating HELICS installer and understanding the directories please go to [helics-installer-guide](../install-guide/helics-installer-guide)
+- For steps on navigating HELICS installer and understanding the directories please go to [helics-installer-guide](../../install-guide/helics-installer-guide)
 
 ### Step 1: Adding HELICS library and HELICS header paths to makefile generation options (Makemake).
 
@@ -21,7 +21,7 @@ This will open up to a window. Navigate to Compile:
 
   <img alt="config-file2" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol11.PNG width="550"> <br>
 
-3. Here you will add the include directories that hold the HELICS header files (if you are unclear of which directories these are please check [helics-installer-guide](../install-guide/helics-installer-guide)):
+3. Here you will add the include directories that hold the HELICS header files (if you are unclear of which directories these are please check [helics-installer-guide](../../install-guide/helics-installer-guide)):
 
     <img alt="config-file3" src=/config_guide/ide/demo-pictures/helics-installer-config/pathsandsymbol12.PNG width="550"> <br>
 
