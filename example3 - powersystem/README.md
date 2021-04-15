@@ -6,6 +6,18 @@ What you will find in folders:
 2. PowerSystem-Griddyn : The power system model represented in Griddyn (TODO)
 3. PowerSystem-HelicsFed: The power system model represented by Helics Federate (simplified - federate sends over remote/local faults for Comms to process and run simulation in OMNET++; no powersystem simulation is really running.)
 
+## Notes Before Running Co-Simulation
+1. Comms will be ran in the OMNET++ IDE.
+2. PowerSystem-HelicsFed will be ran in the Visual Studio IDE. Each .cpp file is its own federate. Only choose one to run against Comms.
+
+## How This Works
+1. Execute helics_broker -f2 on commandline - be sure to be in the correct directory.
+2. Execute one of the PowerSystem-HelicsFed - this should either be the isolatedFault.exe or NonisolatedFault.exe
+  - This is the HELICS Power System federate.
+3. Execute comms.exe
+ - This will hold the code for the OMNET++ federate and all the modules involved in the IEEE 39-Bus model.
+
+
 
 ## Release
 
