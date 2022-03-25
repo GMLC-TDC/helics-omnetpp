@@ -237,7 +237,8 @@ void Federate::checkMsgUpdate()
         if (relayCodes.size() > 0){
             relayCodes.clear();
         }
-        int numMessages = helicsEndpointPendingMessages(commsys);
+        //int numMessages = helicsEndpointPendingMessages(commsys);
+        int numMessages = helicsEndpointPendingMessageCount(commsys);
         while (numMessages != 0)
         {
             receivedMsg = helicsEndpointGetMessageObject(commsys);

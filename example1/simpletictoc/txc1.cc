@@ -7,7 +7,7 @@
 
 #include <string.h>
 #include <omnetpp.h>
-#include <ValueFederate.h>
+#include <ValueFederate.hpp>
 
 using namespace omnetpp;
 
@@ -29,14 +29,14 @@ protected:
 class Helics : public cSimpleModule, public SimTime // OMNET++ modules called helics - not to be confused
 {
 protected:
-    helics_federate_info infoStruct;
+    HelicsFederateInfo infoStruct;
     const char* fedinitstring = "--federates=1"; // tells the broker to expect 1 federate
-    helics_federate controlFed; // creates an instance of a federate
-    helics_input received; // creates an instance of a input that would take in the value provided by publication federate
-    helics_publication reply; // creates an instance of a publication to reply to pub fed
-    helics_time currenttime = 0.0; /* the current time of the simulation*/
-    helics_error err = helicsErrorInitialize();
-    helics_bool isUpdated;
+    HelicsFederate controlFed; // creates an instance of a federate
+    HelicsInput received; // creates an instance of a input that would take in the value provided by publication federate
+    HelicsPublication reply; // creates an instance of a publication to reply to pub fed
+    HelicsTime currenttime = 0.0; /* the current time of the simulation*/
+    HelicsError err = helicsErrorInitialize();
+    HelicsBool isUpdated;
 
   // The following redefined virtual function holds the algorithm.
     virtual void initialize() override;
@@ -54,7 +54,7 @@ void Helics::initialize()
     helicsFederateInfoSetCoreTypeFromString (infoStruct, "zmq", &err);
     helicsFederateInfoSetCoreInitString (infoStruct, fedinitstring, &err);
 
-    helicsFederateInfoSetTimeProperty( infoStruct, helics_property_time_period, 2.0, &err);
+    helicsFederateInfoSetTimeProperty( infoStruct, HELICS_PROPERTY_TIME_PERIOD, 2.0, &err);
 
     controlFed = helicsCreateValueFederate("simpletictoc.exe", infoStruct, &err);
 
@@ -62,10 +62,10 @@ void Helics::initialize()
     // creates an instance of an input "time" for the federate received from pubFed.exe
     received = helicsFederateRegisterSubscription (controlFed, "time", NULL, &err);
     // creates an instance of a publication "sendback" for the federate which would be sent to pubFed.exe
-    reply = helicsFederateRegisterGlobalPublication (controlFed, "sendback", helics_data_type_string, "", &err);
+    reply = helicsFederateRegisterGlobalPublication (controlFed, "sendback", HELICS_DATA_TYPE_STRING, "", &err);
     //initializes the federate
     helicsFederateEnterInitializingMode (controlFed, &err);
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
         fprintf(stderr, "HELICS failed to enter initialization mode:%s\n", err.message);
     }
@@ -76,7 +76,7 @@ void Helics::initialize()
 
     //executes federates
     helicsFederateEnterExecutingMode (controlFed, &err);
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
         fprintf(stderr, "HELICS failed to enter execution mode:%s\n", err.message);
     }
@@ -89,7 +89,7 @@ void Helics::initialize()
     double omnetTime = SIMTIME_DBL(simTime());
     currenttime = helicsFederateRequestTime (controlFed, omnetTime, &err);
 
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
            fprintf(stderr, "HELICS request time failed\n");
     }
@@ -154,7 +154,7 @@ void Helics::finish()
     double omnetTime = SIMTIME_DBL(simTime());
     helicsPublicationPublishString(reply, "Simulation is done", &err);
     currenttime = helicsFederateRequestTime(controlFed, omnetTime, &err);
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
         fprintf(stderr, "HELICS request time failed:%s\n", err.message);
     }
