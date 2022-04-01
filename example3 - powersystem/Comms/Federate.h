@@ -8,7 +8,7 @@
 #ifndef FEDERATE_H_
 #define FEDERATE_H_
 
-#include "MessageFederate.hpp"
+#include "MessageFederate.h"
 #include "FaultMsg_m.h"
 #include <omnetpp.h>
 #include<vector>
