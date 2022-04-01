@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.5 from HCPacket.msg.
+// Generated file, do not edit! Created by nedtool 5.7 from HCPacket.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -26,7 +26,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <memory>
 #include "HCPacket_m.h"
 
 namespace omnetpp {
@@ -68,7 +67,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *buffer, std::list<T,A>& l)
 {
     int n;
     doParsimUnpacking(buffer, n);
-    for (int i = 0; i < n; i++) {
+    for (int i=0; i<n; i++) {
         l.push_back(T());
         doParsimUnpacking(buffer, l.back());
     }
@@ -88,7 +87,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *buffer, std::set<T,Tr,A>& s)
 {
     int n;
     doParsimUnpacking(buffer, n);
-    for (int i = 0; i < n; i++) {
+    for (int i=0; i<n; i++) {
         T x;
         doParsimUnpacking(buffer, x);
         s.insert(x);
@@ -111,7 +110,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *buffer, std::map<K,V,Tr,A>& m)
 {
     int n;
     doParsimUnpacking(buffer, n);
-    for (int i = 0; i < n; i++) {
+    for (int i=0; i<n; i++) {
         K k; V v;
         doParsimUnpacking(buffer, k);
         doParsimUnpacking(buffer, v);
@@ -149,38 +148,10 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 
 // forward
 template<typename T, typename A>
 std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
 
 // Template rule which fires if a struct or class doesn't have operator<<
 template<typename T>
@@ -199,7 +170,7 @@ inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
         out << *it;
     }
     out.put('}');
-
+    
     char buf[32];
     sprintf(buf, " (size=%u)", (unsigned int)vec.size());
     out.write(buf, strlen(buf));
@@ -208,8 +179,11 @@ inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
 
 Register_Class(HCPacket)
 
-HCPacket::HCPacket(const char *name, short kind) : ::omnetpp::cPacket(name, kind)
+HCPacket::HCPacket(const char *name, short kind) : ::omnetpp::cPacket(name,kind)
 {
+    this->srcAddress = 0;
+    this->destAddress = 0;
+    this->hops = 0;
 }
 
 HCPacket::HCPacket(const HCPacket& other) : ::omnetpp::cPacket(other)
@@ -223,7 +197,7 @@ HCPacket::~HCPacket()
 
 HCPacket& HCPacket::operator=(const HCPacket& other)
 {
-    if (this == &other) return *this;
+    if (this==&other) return *this;
     ::omnetpp::cPacket::operator=(other);
     copy(other);
     return *this;
@@ -286,11 +260,6 @@ class HCPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
     mutable const char **propertynames;
-    enum FieldConstants {
-        FIELD_srcAddress,
-        FIELD_destAddress,
-        FIELD_hops,
-    };
   public:
     HCPacketDescriptor();
     virtual ~HCPacketDescriptor();
@@ -317,7 +286,7 @@ class HCPacketDescriptor : public omnetpp::cClassDescriptor
 
 Register_ClassDescriptor(HCPacketDescriptor)
 
-HCPacketDescriptor::HCPacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(HCPacket)), "omnetpp::cPacket")
+HCPacketDescriptor::HCPacketDescriptor() : omnetpp::cClassDescriptor("HCPacket", "omnetpp::cPacket")
 {
     propertynames = nullptr;
 }
@@ -364,11 +333,11 @@ unsigned int HCPacketDescriptor::getFieldTypeFlags(int field) const
         field -= basedesc->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_srcAddress
-        FD_ISEDITABLE,    // FIELD_destAddress
-        FD_ISEDITABLE,    // FIELD_hops
+        FD_ISEDITABLE,
+        FD_ISEDITABLE,
+        FD_ISEDITABLE,
     };
-    return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
+    return (field>=0 && field<3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *HCPacketDescriptor::getFieldName(int field) const
@@ -384,16 +353,16 @@ const char *HCPacketDescriptor::getFieldName(int field) const
         "destAddress",
         "hops",
     };
-    return (field >= 0 && field < 3) ? fieldNames[field] : nullptr;
+    return (field>=0 && field<3) ? fieldNames[field] : nullptr;
 }
 
 int HCPacketDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srcAddress") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destAddress") == 0) return base+1;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hops") == 0) return base+2;
+    if (fieldName[0]=='s' && strcmp(fieldName, "srcAddress")==0) return base+0;
+    if (fieldName[0]=='d' && strcmp(fieldName, "destAddress")==0) return base+1;
+    if (fieldName[0]=='h' && strcmp(fieldName, "hops")==0) return base+2;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -406,11 +375,11 @@ const char *HCPacketDescriptor::getFieldTypeString(int field) const
         field -= basedesc->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
-        "int",    // FIELD_srcAddress
-        "int",    // FIELD_destAddress
-        "int",    // FIELD_hops
+        "int",
+        "int",
+        "int",
     };
-    return (field >= 0 && field < 3) ? fieldTypeStrings[field] : nullptr;
+    return (field>=0 && field<3) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **HCPacketDescriptor::getFieldPropertyNames(int field) const
@@ -477,9 +446,9 @@ std::string HCPacketDescriptor::getFieldValueAsString(void *object, int field, i
     }
     HCPacket *pp = (HCPacket *)object; (void)pp;
     switch (field) {
-        case FIELD_srcAddress: return long2string(pp->getSrcAddress());
-        case FIELD_destAddress: return long2string(pp->getDestAddress());
-        case FIELD_hops: return long2string(pp->getHops());
+        case 0: return long2string(pp->getSrcAddress());
+        case 1: return long2string(pp->getDestAddress());
+        case 2: return long2string(pp->getHops());
         default: return "";
     }
 }
@@ -494,9 +463,9 @@ bool HCPacketDescriptor::setFieldValueAsString(void *object, int field, int i, c
     }
     HCPacket *pp = (HCPacket *)object; (void)pp;
     switch (field) {
-        case FIELD_srcAddress: pp->setSrcAddress(string2long(value)); return true;
-        case FIELD_destAddress: pp->setDestAddress(string2long(value)); return true;
-        case FIELD_hops: pp->setHops(string2long(value)); return true;
+        case 0: pp->setSrcAddress(string2long(value)); return true;
+        case 1: pp->setDestAddress(string2long(value)); return true;
+        case 2: pp->setHops(string2long(value)); return true;
         default: return false;
     }
 }
@@ -527,4 +496,5 @@ void *HCPacketDescriptor::getFieldStructValuePointer(void *object, int field, in
         default: return nullptr;
     }
 }
+
 

@@ -221,7 +221,7 @@ void Federate::checkMsgUpdate()
 {
     currenttime = helicsFederateRequestTime (commFed, 1.0, &err);
 
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
            fprintf(stderr, "HELICS request time failed\n");
     }
@@ -241,7 +241,7 @@ void Federate::checkMsgUpdate()
         int numMessages = helicsEndpointPendingMessageCount(commsys);
         while (numMessages != 0)
         {
-            receivedMsg = helicsEndpointGetMessageObject(commsys);
+            receivedMsg = helicsEndpointGetMessage(commsys);
             std::string msgSource = helicsMessageGetSource(receivedMsg);
             //std::cout << "Original source: " << msgSource << std::endl;
 
@@ -287,7 +287,7 @@ void Federate::isolatedMsg(std::string relay)
     std::string isoMsg = "mtype:2,mcode:410";
     helicsMessageSetDestination(responseMsg, relay.c_str(), &err);
     helicsMessageSetData(responseMsg, isoMsg.c_str(), 128, &err);
-    helicsEndpointSendMessageObject(commsys, responseMsg, &err);
+    helicsEndpointSendMessage(commsys, responseMsg, &err);
 
 
 }
@@ -329,7 +329,7 @@ void Federate::initialize()
     infoStruct = helicsCreateFederateInfo();
     helicsFederateInfoSetCoreTypeFromString (infoStruct, "zmq", &err);
     helicsFederateInfoSetCoreInitString (infoStruct, fedinitstring, &err);
-    helicsFederateInfoSetTimeProperty( infoStruct, helics_property_time_period, 1.0, &err);
+    helicsFederateInfoSetTimeProperty( infoStruct, HELICS_PROPERTY_TIME_PERIOD, 1.0, &err);
 
     commFed = helicsCreateMessageFederate("layoutTest.exe", infoStruct, &err);
 
@@ -338,12 +338,12 @@ void Federate::initialize()
 
 
     // initializes msg objects in federate
-    receivedMsg = helicsFederateCreateMessageObject(commFed, &err);
-    responseMsg = helicsFederateCreateMessageObject(commFed, &err);
+    receivedMsg = helicsFederateCreateMessage(commFed, &err);
+    responseMsg = helicsFederateCreateMessage(commFed, &err);
 
     //initializes the federate
     helicsFederateEnterInitializingMode (commFed, &err);
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
         fprintf(stderr, "HELICS failed to enter initialization mode:%s\n", err.message);
     }
@@ -354,7 +354,7 @@ void Federate::initialize()
 
     //executes federates
     helicsFederateEnterExecutingMode (commFed, &err);
-    if (err.error_code != helics_ok)
+    if (err.error_code != HELICS_OK)
     {
         fprintf(stderr, "HELICS failed to enter execution mode:%s\n", err.message);
     }
@@ -416,7 +416,7 @@ void Federate::finish()
         std::string isoMsg = pgIterate->second;
         helicsMessageSetDestination(responseMsg, relay.c_str(), &err);
         helicsMessageSetData(responseMsg, isoMsg.c_str(), 128, &err);
-        helicsEndpointSendMessageObject(commsys, responseMsg, &err);
+        helicsEndpointSendMessage(commsys, responseMsg, &err);
 
     }
 
