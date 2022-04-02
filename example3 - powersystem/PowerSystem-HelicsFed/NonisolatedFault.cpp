@@ -1,7 +1,7 @@
 // NonisolatedFault.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "MessageFederate.h" 
+#include "MessageFederate.hpp" 
 #include <iostream>
 #include <vector> 
 #include <fstream> 
@@ -37,7 +37,7 @@ enum MSGCODE
 
 
 
-void sendFault(std::string relayName, helics_endpoint endpoint, helics_message_object msgTo, MSGCODE confCode, helics_error thisErr)
+void sendFault(std::string relayName, HelicsEndpoint endpoint, HelicsMessage msgTo, MSGCODE confCode, HelicsError thisErr)
 {
 	helicsMessageSetSource(msgTo, relayName.c_str(), &thisErr);
 	helicsMessageSetDestination(msgTo, "commEndpt", &thisErr);
@@ -53,12 +53,12 @@ void sendFault(std::string relayName, helics_endpoint endpoint, helics_message_o
 	}
 
 	helicsMessageSetData(msgTo, msg.c_str(), 128, &thisErr);
-	helicsEndpointSendMessageObject(endpoint, msgTo, &thisErr);
+	helicsEndpointSendMessage(endpoint, msgTo, &thisErr);
 
 	std::cout << "Message sent!" << std::endl;
 }
 
-void confirmationMsg(std::string relayName, helics_endpoint endpoint, helics_message_object msgTo, MSGCODE confCode, helics_error thisErr)
+void confirmationMsg(std::string relayName, HelicsEndpoint endpoint, HelicsMessage msgTo, MSGCODE confCode, HelicsError thisErr)
 {
 	helicsMessageSetSource(msgTo, relayName.c_str(), &thisErr);
 	helicsMessageSetDestination(msgTo, "commEndpt", &thisErr);
@@ -80,7 +80,7 @@ void confirmationMsg(std::string relayName, helics_endpoint endpoint, helics_mes
 	}
 
 	helicsMessageSetData(msgTo, msg.c_str(), 128, &thisErr);
-	helicsEndpointSendMessageObject(endpoint, msgTo, &thisErr);
+	helicsEndpointSendMessage(endpoint, msgTo, &thisErr);
 
 	std::cout << "Message sent!" << std::endl;
 
@@ -99,11 +99,11 @@ void parseMsg(std::vector<std::string>& separateStrings, std::string msg) {
 
 }
 
-void query(helics_time time, helics_federate fed, bool update, helics_error thisErr)
+void query(HelicsTime time, HelicsFederate fed, bool update, HelicsError thisErr)
 {
 	time = helicsFederateRequestTime(fed, 4.0, &thisErr);
-	helics_message_object bufferMsg;
-	if (thisErr.error_code != helics_ok)
+	HelicsMessage bufferMsg;
+	if (thisErr.error_code != HELICS_OK)
 	{
 		fprintf(stderr, "HELICS request time failed:%s\n", thisErr.message);
 	}
@@ -116,14 +116,14 @@ void query(helics_time time, helics_federate fed, bool update, helics_error this
 	update = helicsFederateHasMessage(fed);
 
 	printf("%d\n", update);
-	int numMessages = helicsFederatePendingMessages(fed);
+	int numMessages = helicsFederatePendingMessageCount(fed);
 	std::cout << "Total number of messages: " << numMessages << std::endl;
 
 	if (update)
 	{
 		while (numMessages != 0)
 		{
-			bufferMsg = helicsFederateGetMessageObject(fed);
+			bufferMsg = helicsFederateGetMessage(fed);
 			fprintf(stdout, "Message: %s\n", helicsMessageGetString(bufferMsg));
 			std::string bufferString = helicsMessageGetString(bufferMsg);
 
@@ -144,7 +144,7 @@ void query(helics_time time, helics_federate fed, bool update, helics_error this
 
 			std::string bufferDest = helicsMessageGetDestination(bufferMsg);
 
-			helics_message_object confirmMsg = helicsFederateCreateMessageObject(fed, &thisErr);
+			HelicsMessage confirmMsg = helicsFederateCreateMessage(fed, &thisErr);
 			if (mtype == replyMessageType)
 			{
 				if (mcode == BREAKER_TRIP_COMMAND)
@@ -188,19 +188,19 @@ void query(helics_time time, helics_federate fed, bool update, helics_error this
 int main()
 {
 	std::vector<std::string> agentsList;
-	helics_federate_info infoStruct;
+	HelicsFederateInfo infoStruct;
 	const char* fedinitstring = "--federates=1"; //tells the broker to expect 1 federate
-	helics_federate subFed;
-	helics_endpoint _14_4;
-	helics_endpoint _3_4;
-	helics_endpoint _5_4; 
-	helics_message_object sendMsg;
-	helics_message_object rcvdMsg;
-	helics_time currenttime = 0.0;
+	HelicsFederate subFed;
+	HelicsEndpoint _14_4;
+	HelicsEndpoint _3_4;
+	HelicsEndpoint _5_4;
+	HelicsMessage sendMsg;
+	HelicsMessage rcvdMsg;
+	HelicsTime currenttime = 0.0;
 
 	bool msgUpdate;
 
-	helics_error err = helicsErrorInitialize();
+	HelicsError err = helicsErrorInitialize();
 
 	infoStruct = helicsCreateFederateInfo();
 
@@ -213,7 +213,7 @@ int main()
 
 	helicsFederateInfoFree(infoStruct);
 
-	if (err.error_code != helics_ok)
+	if (err.error_code != HELICS_OK)
 	{
 		return (-2);
 	}
@@ -222,14 +222,14 @@ int main()
 	_3_4 = helicsFederateRegisterGlobalEndpoint(subFed, "_3_4", NULL, &err);
 	_5_4 = helicsFederateRegisterGlobalEndpoint(subFed, "_5_4", NULL, &err); 
 
-	rcvdMsg = helicsFederateCreateMessageObject(subFed, &err);
+	rcvdMsg = helicsFederateCreateMessage(subFed, &err);
 
-	sendMsg = helicsFederateCreateMessageObject(subFed, &err);
+	sendMsg = helicsFederateCreateMessage(subFed, &err);
 
 	//Initialize all variables 
 	helicsFederateEnterInitializingMode(subFed, &err);
 
-	if (err.error_code != helics_ok)
+	if (err.error_code != HELICS_OK)
 	{
 		fprintf(stderr, "HELICS failed to enter initialization mode:%s\n", err.message);
 	}
@@ -240,7 +240,7 @@ int main()
 	// Enter simulation execution 
 	helicsFederateEnterExecutingMode(subFed, &err);
 
-	if (err.error_code != helics_ok)
+	if (err.error_code != HELICS_OK)
 	{
 		fprintf(stderr, "HELICS failed to enter execution mode:%s\n", err.message);
 	}
