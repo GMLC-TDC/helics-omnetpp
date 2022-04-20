@@ -8,16 +8,13 @@ Open up Visual Studio
 
 a. When you open up Visual Studio, there will be a welcome/get started pop up. You will see panel like this:
 
-***Insert IMAGE***
+  <img src=VisualStudioGuide-images/visualStudio1.png width="550">
 
 Choose "Create a new project"
 
-***INSERT IMAGE***
-
-
 b. Then choose "Empty Project"
 
-***INSERT IMAGE***
+  <img src=VisualStudioGuide-images/visualStudio2.png width="550">
 
 c. Enter name the project with the file name without it’s suffix (for example: isolatedFault)
 
@@ -35,7 +32,7 @@ ii. Go to the location of the HELICS-omnetpp example
 ```
 Click Add. You should see the isolatedFault.cpp file appear in the Solutions Explorer under the Source Files in Visual Studio.
 
-***INSERT IMAGE***
+  <img src=VisualStudioGuide-images/visualStudio3.png width="550">
 
 ### Step 2. Link HELICS in visual studios to run example
 
@@ -43,11 +40,11 @@ a. Since we are using the HELICS installer, only the release version is attached
 
 b. Go to Project > Properties > C/C++ > All Options > Additional Include Directories > Down Arrow > Edit
 
-***INSERT IMAGE****
+  <img src=VisualStudioGuide-images/visualStudio4.png width="550">
 
 This is where you will add the Include Directory of your HELICS installation
 
-***INSERT IMAGE***
+  <img src=VisualStudioGuide-images/visualStudio5.png width="550">
 
 Click Ok > Apply. ** Do not exit out of Properties yet **
 
@@ -57,7 +54,7 @@ i. Additional Dependencies > Down Arrow > Edit
 
 This is where you will add the HELICS static library name: helics.lib
 
-***INSERT IMAGE***
+  <img src=VisualStudioGuide-images/visualStudio6.png width="550">
 
 Click Ok > Apply. ** Do not exit out of Properties yet. Stay in Linker**
 
@@ -65,7 +62,7 @@ ii. Additional Library Directories > Down Arrow > Edit
 
 This is where you will add the directories that hold the HELICS static and dynamic libraries, helics.lib and helics.dll, i.e. from example:
 
-***INSERT IMAGE***
+  <img src=VisualStudioGuide-images/visualStudio7.png width="550">
 
 Click Ok > Apply > Ok (This will exit you out of Properties)
 
@@ -75,15 +72,14 @@ e. Once the solution is built, go to the Solution Explorer. You will go to the T
 
 Folder View
 
-  if you see this, you can just simply click Folder View and it’ll switch you over to the Folder View
+    if you see this, you can just simply click Folder View and it’ll switch you over to the Folder View
 
 or
 
-Two Options: .sln and project name with path
+    Two Options: .sln and project name with path
 
-  if you see this, you will click the project name with the path
+          if you see this, you will click the project name with the path
 
-Here you see that there are two options.
 
 Once you switch to Folder View or the option with the name + path, you will go to the Folder x64 > Release. You should be able to find the .exe file  on of the project you’re looking at right now.
 
@@ -120,5 +116,3 @@ Click Green Play button 'Local Windows Debugger'
 ```
 
 ** Microsoft visual Studio Debug console should pop up **
-
-***INSERT IMAGE***
