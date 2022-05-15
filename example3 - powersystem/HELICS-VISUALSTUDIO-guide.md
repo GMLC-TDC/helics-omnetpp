@@ -6,7 +6,7 @@ _(We will be using isolatedFault as an example)_
 
 Open up Visual Studio
 
-a. When you open up Visual Studio, there will be a welcome/get started pop up. You will see panel like this:
+a. When you open up Visual Studio, there will be a welcome/get started pop up. You will see a panel like this:
 
   <img src=VisualStudioGuide-images/visualStudio1.png width="550">
 
@@ -16,7 +16,7 @@ b. Then choose "Empty Project"
 
   <img src=VisualStudioGuide-images/visualStudio2.png width="550">
 
-c. Enter name the project with the file name without it’s suffix (for example: isolatedFault)
+c. Enter the name for the project as the file name without its suffix (for example: isolatedFault)
 
 d. Choose “Create”.
 
@@ -34,7 +34,7 @@ Click Add. You should see the isolatedFault.cpp file appear in the Solutions Exp
 
   <img src=VisualStudioGuide-images/visualStudio3.png width="550">
 
-### Step 2. Link HELICS in visual studios to run example
+### Step 2. Link HELICS in Visual Studio to run example
 
 a. Since we are using the HELICS installer, only the release version is attached. We need to make sure we’re running on “Release” and “x64” settings. Check that these are set in each tool bar of the projects
 
@@ -81,7 +81,7 @@ or
           if you see this, you will click the project name with the path
 
 
-Once you switch to Folder View or the option with the name + path, you will go to the Folder x64 > Release. You should be able to find the .exe file  on of the project you’re looking at right now.
+Once you switch to Folder View or the option with the name + path, you will go to the Folder x64 > Release. You should be able to find the .exe file of the project you’re looking at right now.
 
 Here you will add the dynamic library. This is crucial part and cannot be missed or else we will have an error when we try to run the simulation.
 
@@ -93,7 +93,7 @@ Click on the helics.dll in bin folder > Ctrl + c > Go over to Release folder > C
 
 iii. Go back to Solutions View in order to run the solution (executable).
 
-To do this, go back to Solution Explorer toolbar and click on folder/window icon next tot the Home Icon. Click the down arrow and choose option with .sln extension.
+To do this, go back to the Solution Explorer toolbar and click on folder/window icon next to the Home Icon. Click the down arrow and choose option with .sln extension.
 
 ### Step 3. Run the example
 

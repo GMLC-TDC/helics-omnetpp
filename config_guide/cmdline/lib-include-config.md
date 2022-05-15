@@ -12,7 +12,7 @@ For example, if you are running simpletictoc, go to the folder that holds the * 
 
 These libraries have the suffix ".dll".
 
-The HELICS dll should look something like this "helicsSharedLib.dll".
+The HELICS dll should look something like this "helics.dll".
 
 The ZMQ dll should look something like this
 "libzmq-v142-mt-gd-4_3_4.dll" (depending on your HELICS version, you may not have this)
