@@ -22,16 +22,16 @@ using namespace omnetpp;
 class Federate: public cSimpleModule, public cTopology, public SimTime
 {
 private:
-    helics_federate_info infoStruct; // info struct for federate
+    HelicsFederateInfo infoStruct; // info struct for federate
     const char* fedinitstring = "--federates=1"; // tells the broker to expect 1 federate
-    helics_federate commFed; // creates an instance of a federate
-    helics_time currenttime = 0.0; /* the current time of the simulation*/
-    helics_error err = helicsErrorInitialize();
-    helics_bool msgUpdated; // returns true if updated, returns false if not
+    HelicsFederate commFed; // creates an instance of a federate
+    HelicsTime currenttime = 0.0; /* the current time of the simulation*/
+    HelicsError err = helicsErrorInitialize();
+    HelicsBool msgUpdated; // returns true if updated, returns false if not
 
-    helics_endpoint commsys; // name of federate endpoint
-    helics_message_object receivedMsg;
-    helics_message_object responseMsg;
+    HelicsEndpoint commsys; // name of federate endpoint
+    HelicsMessage receivedMsg;
+    HelicsMessage responseMsg;
 
     //double omnetTime = SIMTIME_DBL(simTime());
     struct Relay

@@ -6,7 +6,7 @@ Helics-Omnetpp contains examples of the interaction between HELICS and OMNeT++.
 
 ## Installation of HELICS
 
-HELICS download for preferred OS (Ubuntu, Windows, MacOS, docker) can be found [here](https://helics.readthedocs.io/en/latest/installation/index.html#).
+HELICS download for preferred OS (Ubuntu, Windows, MacOS, docker) can be found [here](https://docs.helics.org/en/latest/user-guide/installation/index.html).
 
 *HELICS also provides options of installing through an installer (must donwload pre-compiled libraries from release page and add to path) or package manager.*
 
@@ -16,6 +16,8 @@ OMNeT++ download for preferred OS (Linux, Windows, MacOS, docker) can be found [
 This will download a zipped file which needs to be extracted under a directory that does not contain any spaces in the name.
 
 Depending on which OS you are using, you will be need to follow the instructions directed in the [Install Guide](https://doc.omnetpp.org/omnetpp/InstallGuide.pdf) on the OMNeT++ website.
+
+**NOTE: You may need to set PREFER_CLANG=no and PREFER_LLD=no in configure.user**
 
 ###### **OMNeT++ can be ran using their MSYS2 commandline tool or their IDE. Both have been embedded with their simulation kernel which is based on C++.**
 

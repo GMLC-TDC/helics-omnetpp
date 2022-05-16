@@ -12,18 +12,19 @@ For example, if you are running simpletictoc, go to the folder that holds the * 
 
 These libraries have the suffix ".dll".
 
-The HELICS dll should look something like this "helicsSharedLib.dll".
+The HELICS dll should look something like this "helics.dll".
 
 The ZMQ dll should look something like this
-"libzmq-v142-mt-gd-4_3_2.dll"
+"libzmq-v142-mt-gd-4_3_4.dll" (depending on your HELICS version, you may not have this)
 
 These could vary depending on your HELICS version and build.
 
 You will be copying these two libraries directly into the project like this:
-
-![](/config_guide/cmdline/demo-pictures/demo1.jpg)
-
-![](/config_guide/cmdline/demo-pictures/demo2.jpg)
+```
+cp <your path>/HELICS/build/bin/Debug/helicsd.dll .
+  
+cp <your path>/HELICS/build/bin/Debug/libzmq-v142-mt-gd-4_3_4.dll .
+```
 
 ## Step 2: Makefile generation
 
@@ -39,8 +40,11 @@ In order to link the HELICS library/include paths and HELICS library, you need t
 
 In this example you will see that absolute paths have been used.
 
-![](/config_guide/cmdline/demo-pictures/demo3.jpg)
-
+```
+opp_makemake -f -IC:<your path>/HELICS/src/helics/shared_api_library -IC:<your path>/HELICS/build/src/helics/shared_api_library 
+-IC:<your path>/HELICS/build/src/helics/cpp98 -IC:<your path>/HELICS/build/src/helics -L<your path>/HELICS/build/lib/Debug 
+-lhelicsd -o hypercube
+```
 After running this command, there should be a generated Makefile. This should successfully link HELICS to OMNET++.
 
 The next two steps will take you through running the rest of your project.
