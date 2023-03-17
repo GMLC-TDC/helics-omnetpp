@@ -1,10 +1,12 @@
 In order to run an OMNeT++ simulation, we must create a new OMNeT++ project.
 
+**NOTE: You may need to set PREFER_CLANG=no and PREFER_LLD=no in configure.user in OMNeT++**
+
   ***This example is based on importing example1/simpletictoc.***
 
 1. Create a new OMNeT++ Project: File > New > OMNeT++ Project.
 
-    <img alt="omnet++ setup" src=/config_guide/ide/demo-pictures/StartOmnetProj1.PNG width="550"> <br>
+    <img alt="omnet++ setup" src=/config_guide/ide/demo-pictures/StartOmnetProj1.png width="550"> <br>
 
 2. Name your OMNeT++ project.
 
